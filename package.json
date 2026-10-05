@@ -1,0 +1,33 @@
+{
+  "name": "ss-study-system",
+  "private": true,
+  "version": "6.0.0",
+  "description": "SS سیستم مطالعه — اپ شخصی، آفلاین و فارسی برای مدیریت تست، مرور، آزمون و برنامه",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "start": "vite --host --port 5173",
+    "build": "vite build",
+    "preview": "vite preview --host --port 4173",
+    "test": "vitest run",
+    "check:no-remote-ai": "node scripts/check-no-remote-ai.mjs",
+    "serve": "node server/hub-server.mjs",
+    "hub": "vite --host --open /hub.html"
+  },
+  "dependencies": {
+    "@fontsource/vazirmatn": "^5.0.20",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
+    "postcss": "^8.4.38",
+    "tailwindcss": "^3.4.4",
+    "vite": "^5.3.1",
+    "vitest": "^1.6.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
