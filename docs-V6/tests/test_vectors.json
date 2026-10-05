@@ -1,0 +1,318 @@
+{
+  "percent": [
+    {
+      "C": 10,
+      "W": 5,
+      "N": 20,
+      "expected": 41.66666666666667
+    },
+    {
+      "C": 0,
+      "W": 20,
+      "N": 20,
+      "expected": -33.33333333333333
+    },
+    {
+      "C": 20,
+      "W": 0,
+      "N": 20,
+      "expected": 100.0
+    },
+    {
+      "C": 7,
+      "W": 3,
+      "N": 15,
+      "expected": 40.0
+    },
+    {
+      "C": 0,
+      "W": 0,
+      "N": 0,
+      "expected": null
+    },
+    {
+      "C": 12,
+      "W": 0,
+      "N": 30,
+      "expected": 40.0
+    }
+  ],
+  "correct": [
+    {
+      "chosen": 0,
+      "answer": 2,
+      "expected": "B"
+    },
+    {
+      "chosen": 3,
+      "answer": null,
+      "expected": "U"
+    },
+    {
+      "chosen": 2,
+      "answer": 2,
+      "expected": "C"
+    },
+    {
+      "chosen": 1,
+      "answer": 4,
+      "expected": "W"
+    }
+  ],
+  "timeWeight": [
+    {
+      "ageDays": 0,
+      "H": 21,
+      "expected": 1.0
+    },
+    {
+      "ageDays": 7,
+      "H": 21,
+      "expected": 0.7937005259840998
+    },
+    {
+      "ageDays": 21,
+      "H": 21,
+      "expected": 0.5
+    },
+    {
+      "ageDays": 42,
+      "H": 21,
+      "expected": 0.25
+    },
+    {
+      "legacy": true,
+      "expected": 0.3
+    }
+  ],
+  "mastery": {
+    "H": 21,
+    "k": 4,
+    "prior": [
+      0.4,
+      0.3,
+      0.3
+    ],
+    "attempts": [
+      {
+        "result": "C",
+        "ageDays": 0,
+        "isGuess": false,
+        "isLegacy": false
+      },
+      {
+        "result": "C",
+        "ageDays": 7,
+        "isGuess": false,
+        "isLegacy": false
+      },
+      {
+        "result": "W",
+        "ageDays": 21,
+        "isGuess": false,
+        "isLegacy": false
+      },
+      {
+        "result": "B",
+        "ageDays": 3,
+        "isGuess": false,
+        "isLegacy": false
+      },
+      {
+        "result": "C",
+        "ageDays": 2,
+        "isGuess": true,
+        "isLegacy": false
+      },
+      {
+        "result": "W",
+        "ageDays": null,
+        "isGuess": false,
+        "isLegacy": true
+      }
+    ],
+    "expected": {
+      "pC": 0.4577962421406771,
+      "pW": 0.29257857893622835,
+      "pB": 0.2496251789230946,
+      "effectiveN": 4.435541932701611,
+      "confidence": 0.5258158833289163
+    }
+  },
+  "reviewPriority": [
+    {
+      "reasonWeights": [
+        5
+      ],
+      "wrongCount": 1,
+      "blankCount": 0,
+      "important": false,
+      "daysOverdue": 0,
+      "correctStreak": 0,
+      "expected": 5.0
+    },
+    {
+      "reasonWeights": [
+        4,
+        2
+      ],
+      "wrongCount": 2,
+      "blankCount": 1,
+      "important": true,
+      "daysOverdue": 7,
+      "correctStreak": 1,
+      "expected": 25.5
+    },
+    {
+      "reasonWeights": [],
+      "wrongCount": 0,
+      "blankCount": 1,
+      "important": false,
+      "daysOverdue": -3,
+      "correctStreak": 5,
+      "expected": 0.8999999999999999
+    },
+    {
+      "reasonWeights": [
+        2.5,
+        2,
+        1.5
+      ],
+      "wrongCount": 3,
+      "blankCount": 0,
+      "important": false,
+      "daysOverdue": 14,
+      "correctStreak": 0,
+      "expected": 25.5
+    }
+  ],
+  "strategy": [
+    {
+      "pC": 0.5,
+      "pW": 0.3,
+      "q": 0.625,
+      "E": 1.5,
+      "answer": true
+    },
+    {
+      "pC": 0.1,
+      "pW": 0.4,
+      "q": 0.2,
+      "E": -0.19999999999999996,
+      "answer": false
+    },
+    {
+      "pC": 0.2,
+      "pW": 0.6,
+      "q": 0.25,
+      "E": 0.0,
+      "answer": false
+    },
+    {
+      "pC": 0.05,
+      "pW": 0.15,
+      "q": 0.25,
+      "E": 0.0,
+      "answer": false
+    }
+  ],
+  "weightedJaccard": [
+    {
+      "a": {
+        "t1": 10,
+        "t2": 5
+      },
+      "b": {
+        "t1": 5,
+        "t2": 5,
+        "t3": 5
+      },
+      "expected": 0.5
+    },
+    {
+      "a": {
+        "t1": 10
+      },
+      "b": {
+        "t1": 10
+      },
+      "expected": 1.0
+    },
+    {
+      "a": {
+        "t1": 4
+      },
+      "b": {
+        "t2": 4
+      },
+      "expected": 0.0
+    }
+  ],
+  "coverage": [
+    {
+      "taughtQ": 120,
+      "doneQ": 45,
+      "expected": {
+        "coverage": 0.375,
+        "remaining": 75
+      }
+    },
+    {
+      "taughtQ": 0,
+      "doneQ": 0,
+      "expected": {
+        "coverage": null,
+        "remaining": 0
+      }
+    }
+  ],
+  "workload": [
+    {
+      "untouchedQ": 200,
+      "secPerQ": 72,
+      "dueReviews": 30,
+      "daysLeft": 10,
+      "freeMinPerDay": 40,
+      "expected": {
+        "workMin": 285.0,
+        "perDay": 28.5,
+        "ratio": 0.7125,
+        "verdict": "ok"
+      }
+    },
+    {
+      "untouchedQ": 200,
+      "secPerQ": 72,
+      "dueReviews": 30,
+      "daysLeft": 10,
+      "freeMinPerDay": 30,
+      "expected": {
+        "workMin": 285.0,
+        "perDay": 28.5,
+        "ratio": 0.95,
+        "verdict": "tight"
+      }
+    },
+    {
+      "untouchedQ": 200,
+      "secPerQ": 72,
+      "dueReviews": 30,
+      "daysLeft": 10,
+      "freeMinPerDay": 20,
+      "expected": {
+        "workMin": 285.0,
+        "perDay": 28.5,
+        "ratio": 1.425,
+        "verdict": "overloaded"
+      }
+    }
+  ],
+  "prng_mulberry32_seed42_first5": [
+    0.6011037519201636,
+    0.44829055899754167,
+    0.8524657934904099,
+    0.6697340414393693,
+    0.17481389874592423
+  ],
+  "_notes": "Monte-Carlo prediction is tested by properties: P10<=P50<=P90, all within [-33.34,100], same seed => identical output, mean within ±1.0 of analytic expectation 100*(3*sum(n*pC)-sum(n*pW))/(3*N) for 5000 runs. | v3: workload vector #1 verdict fixed (0.7125 < 0.8 => ok, was wrongly 'overloaded'); tight/overloaded cases added."
+}

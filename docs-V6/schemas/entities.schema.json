@@ -1,0 +1,3005 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ss/entities.schema.json",
+  "title": "SS entities v1 (v2)",
+  "$defs": {
+    "Common": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "uuid"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "dataVersion": {
+          "type": "integer"
+        },
+        "archived": {
+          "type": "boolean"
+        },
+        "ownerId": {
+          "type": "string"
+        },
+        "orgId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "syncState": {
+          "enum": [
+            "local",
+            "pending",
+            "synced",
+            "conflict"
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "createdAt",
+        "updatedAt",
+        "dataVersion",
+        "archived",
+        "ownerId"
+      ]
+    },
+    "LocalDate": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Gregorian date in Asia/Tehran; display as Jalali"
+    },
+    "Subject": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "name": {
+              "type": "string"
+            },
+            "group": {
+              "enum": [
+                "math",
+                "physics",
+                "chemistry",
+                "biology",
+                "geology",
+                "literature",
+                "arabic",
+                "religion",
+                "english",
+                "other"
+              ]
+            },
+            "grade": {
+              "enum": [
+                10,
+                11,
+                12
+              ]
+            },
+            "branch": {
+              "enum": [
+                "mathPhysics",
+                "experimental",
+                "common"
+              ]
+            },
+            "color": {
+              "type": "string"
+            },
+            "icon": {
+              "type": "string"
+            },
+            "examWeight": {
+              "type": "number"
+            },
+            "order": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "name",
+            "group",
+            "grade",
+            "branch",
+            "color",
+            "icon",
+            "examWeight",
+            "order"
+          ]
+        }
+      ]
+    },
+    "Book": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "subjectId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "publisher": {
+              "type": "string"
+            },
+            "grade": {
+              "enum": [
+                10,
+                11,
+                12
+              ]
+            },
+            "edition": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "numberingMode": {
+              "enum": [
+                "global",
+                "perChapter",
+                "perNode"
+              ]
+            },
+            "hasDifficulty": {
+              "type": "boolean"
+            },
+            "difficultyMax": {
+              "type": "integer"
+            },
+            "coverColor": {
+              "type": "string"
+            },
+            "license": {
+              "enum": [
+                "personal-analysis",
+                "licensed",
+                "original"
+              ]
+            },
+            "source": {
+              "enum": [
+                "seed",
+                "import",
+                "manual"
+              ]
+            }
+          },
+          "required": [
+            "subjectId",
+            "title",
+            "publisher",
+            "grade",
+            "edition",
+            "numberingMode",
+            "hasDifficulty",
+            "difficultyMax",
+            "coverColor",
+            "license",
+            "source"
+          ]
+        }
+      ]
+    },
+    "Node": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "bookId": {
+              "type": "string"
+            },
+            "parentId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "depth": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 3
+            },
+            "order": {
+              "type": "integer"
+            },
+            "code": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "topic",
+                "mixed",
+                "checkup",
+                "comprehensive",
+                "final",
+                "theory"
+              ]
+            },
+            "numberingRoot": {
+              "type": "boolean"
+            },
+            "coversNodeIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "qStart": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "qEnd": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "bookId",
+            "parentId",
+            "depth",
+            "order",
+            "title",
+            "kind"
+          ]
+        }
+      ]
+    },
+    "Question": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "bookId": {
+              "type": "string"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "scopeNodeId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "number": {
+              "type": "integer"
+            },
+            "answer": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 4
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "keyStatus": {
+              "enum": [
+                "unknown",
+                "proposed",
+                "reviewed",
+                "disputed"
+              ]
+            },
+            "difficulty": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "topicNodeIds": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "skillIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "bookId",
+            "nodeId",
+            "number",
+            "answer",
+            "keyStatus"
+          ]
+        }
+      ]
+    },
+    "Session": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "practice",
+                "legacy",
+                "exam",
+                "repeat"
+              ]
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "examId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ranges": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "nodeId": {
+                    "type": "string"
+                  },
+                  "from": {
+                    "type": "integer"
+                  },
+                  "to": {
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "nodeId",
+                  "from",
+                  "to"
+                ]
+              }
+            },
+            "localDate": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LocalDate"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "startedAt": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "durationSec": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "note": {
+              "type": "string"
+            },
+            "stats": {
+              "type": "object",
+              "properties": {
+                "C": {
+                  "type": "integer"
+                },
+                "W": {
+                  "type": "integer"
+                },
+                "B": {
+                  "type": "integer"
+                },
+                "U": {
+                  "type": "integer"
+                },
+                "N": {
+                  "type": "integer"
+                },
+                "P": {
+                  "anyOf": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                }
+              }
+            },
+            "timeSource": {
+              "enum": [
+                "timer",
+                "estimated",
+                "none"
+              ]
+            },
+            "secPerQ": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "subjectId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "flags": {
+              "type": "array",
+              "items": {
+                "enum": [
+                  "tooFast",
+                  "allSame",
+                  "mostlyBlank",
+                  "keyAfterAnswers"
+                ]
+              }
+            }
+          },
+          "required": [
+            "kind",
+            "ranges",
+            "localDate"
+          ]
+        }
+      ]
+    },
+    "Attempt": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "sourceId": {
+              "type": "string"
+            },
+            "sourceType": {
+              "enum": [
+                "session",
+                "exam"
+              ]
+            },
+            "questionRef": {
+              "type": "string"
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "nodeId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "subjectId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "chosen": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4
+            },
+            "result": {
+              "enum": [
+                "C",
+                "W",
+                "B",
+                "U"
+              ]
+            },
+            "isGuess": {
+              "type": "boolean"
+            },
+            "confidence": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 100
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "isLegacy": {
+              "type": "boolean"
+            },
+            "attemptIndex": {
+              "type": "integer"
+            },
+            "localDate": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LocalDate"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "at": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "timeSec": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "reasonIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "important": {
+              "type": "boolean"
+            },
+            "position": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "sourceId",
+            "sourceType",
+            "questionRef",
+            "chosen",
+            "result",
+            "isGuess",
+            "isLegacy",
+            "attemptIndex"
+          ]
+        }
+      ]
+    },
+    "TaughtState": {
+      "type": "object",
+      "properties": {
+        "bookId": {
+          "type": "string"
+        },
+        "nodeId": {
+          "type": "string"
+        },
+        "state": {
+          "enum": [
+            "none",
+            "taughtAtSchool",
+            "selfStudied",
+            "mastered"
+          ]
+        },
+        "since": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/LocalDate"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "lastChangedAt": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "bookId",
+        "nodeId",
+        "state"
+      ]
+    },
+    "TaughtEvent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "bookId": {
+              "type": "string"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            }
+          },
+          "required": [
+            "bookId",
+            "nodeId",
+            "from",
+            "to",
+            "at",
+            "localDate"
+          ]
+        }
+      ]
+    },
+    "ExamSection": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string"
+        },
+        "subjectId": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "qFrom": {
+          "type": "integer"
+        },
+        "qTo": {
+          "type": "integer"
+        },
+        "refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "bookId": {
+                "type": "string"
+              },
+              "nodeIds": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "topicLabels": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "weight": {
+          "type": "number"
+        }
+      },
+      "required": [
+        "title",
+        "qFrom",
+        "qTo"
+      ]
+    },
+    "Exam": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "organizer": {
+              "enum": [
+                "school",
+                "ghalamchi",
+                "maz",
+                "gaj",
+                "sanjesh",
+                "mehrmah",
+                "khilisabz",
+                "final",
+                "other"
+              ]
+            },
+            "type": {
+              "enum": [
+                "school",
+                "final",
+                "coordinated",
+                "mock",
+                "tutoring",
+                "konkur"
+              ]
+            },
+            "format": {
+              "enum": [
+                "mcq",
+                "descriptive",
+                "mixed"
+              ]
+            },
+            "status": {
+              "enum": [
+                "upcoming",
+                "taken",
+                "graded"
+              ]
+            },
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "time": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "durationMin": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sections": {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/ExamSection"
+              }
+            },
+            "keys": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "integer"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "maxScore": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "targetPercent": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "imageIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "note": {
+              "type": "string"
+            },
+            "blueprintId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "title",
+            "organizer",
+            "type",
+            "format",
+            "status",
+            "localDate",
+            "sections"
+          ]
+        }
+      ]
+    },
+    "ExamAttempt": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "examId": {
+              "type": "string"
+            },
+            "isRepeat": {
+              "type": "boolean"
+            },
+            "repeatIndex": {
+              "type": "integer"
+            },
+            "answers": {
+              "type": "array",
+              "items": {
+                "type": "integer",
+                "minimum": 0,
+                "maximum": 4
+              }
+            },
+            "descriptiveScores": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "number"
+                  }
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "totalScore": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "rank": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "taraz": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "durationMin": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            }
+          },
+          "required": [
+            "examId",
+            "isRepeat",
+            "localDate"
+          ]
+        }
+      ]
+    },
+    "ReviewItem": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "questionRef": {
+              "type": "string"
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "nodeId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "origin": {
+              "enum": [
+                "wrong",
+                "blank",
+                "guessCorrect",
+                "important"
+              ]
+            },
+            "reasonIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "wrongCount": {
+              "type": "integer"
+            },
+            "blankCount": {
+              "type": "integer"
+            },
+            "correctStreak": {
+              "type": "integer"
+            },
+            "important": {
+              "type": "boolean"
+            },
+            "state": {
+              "enum": [
+                "new",
+                "learning",
+                "review",
+                "relearning",
+                "mastered",
+                "suspended"
+              ]
+            },
+            "fsrs": {
+              "type": "object",
+              "description": "ts-fsrs Card fields: due, stability, difficulty, elapsed_days, scheduled_days, reps, lapses, state, last_review"
+            },
+            "due": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "questionRef",
+            "origin",
+            "state",
+            "due"
+          ]
+        }
+      ]
+    },
+    "ReviewLog": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "reviewItemId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "rating": {
+              "enum": [
+                "again",
+                "hard",
+                "good",
+                "easy"
+              ]
+            },
+            "timeSec": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "fsrsLog": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "reviewItemId",
+            "at",
+            "rating",
+            "timeSec",
+            "fsrsLog"
+          ]
+        }
+      ]
+    },
+    "Reason": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "key": {
+              "type": "string"
+            },
+            "label": {
+              "type": "string"
+            },
+            "weight": {
+              "type": "number"
+            },
+            "order": {
+              "type": "integer"
+            },
+            "builtin": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "key",
+            "label",
+            "weight",
+            "order",
+            "builtin"
+          ]
+        }
+      ]
+    },
+    "Goal": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "type": {
+              "enum": [
+                "exam",
+                "finalExam",
+                "konkur",
+                "topicMastery",
+                "habit",
+                "custom"
+              ]
+            },
+            "examId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "deadline": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "targetPercent": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "targetScore": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "subjectIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "nodeRefs": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "bookId": {
+                    "type": "string"
+                  },
+                  "nodeIds": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            },
+            "priority": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 5
+            },
+            "status": {
+              "enum": [
+                "active",
+                "achieved",
+                "missed",
+                "archived"
+              ]
+            }
+          },
+          "required": [
+            "title",
+            "type",
+            "deadline",
+            "priority",
+            "status"
+          ]
+        }
+      ]
+    },
+    "AvailabilityBlock": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "weekday": {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 6,
+              "description": "0=Saturday"
+            },
+            "start": {
+              "type": "string"
+            },
+            "end": {
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "school",
+                "sleep",
+                "commute",
+                "fixedEvent",
+                "free",
+                "rest",
+                "tutoring"
+              ]
+            },
+            "hard": {
+              "type": "boolean"
+            },
+            "label": {
+              "type": "string"
+            },
+            "validFrom": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LocalDate"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "validTo": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/LocalDate"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "weekday",
+            "start",
+            "end",
+            "kind",
+            "hard",
+            "label",
+            "validFrom",
+            "validTo"
+          ]
+        }
+      ]
+    },
+    "Proposal": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "horizon": {
+              "enum": [
+                "week",
+                "longTerm"
+              ]
+            },
+            "weekStart": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "status": {
+              "enum": [
+                "draft",
+                "active",
+                "stale",
+                "discarded"
+              ]
+            },
+            "inputsHash": {
+              "type": "string"
+            },
+            "feasibility": {
+              "type": "object",
+              "properties": {
+                "requiredMin": {
+                  "type": "number"
+                },
+                "availableMin": {
+                  "type": "number"
+                },
+                "ratio": {
+                  "type": "number"
+                },
+                "verdict": {
+                  "enum": [
+                    "ok",
+                    "tight",
+                    "overloaded"
+                  ]
+                }
+              }
+            },
+            "explanations": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "horizon",
+            "weekStart",
+            "status",
+            "inputsHash",
+            "feasibility",
+            "explanations"
+          ]
+        }
+      ]
+    },
+    "PlannedActivity": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "proposalId": {
+              "type": "string"
+            },
+            "goalId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "start": {
+              "type": "string"
+            },
+            "durationMin": {
+              "type": "integer"
+            },
+            "type": {
+              "enum": [
+                "retrieval",
+                "practice",
+                "review",
+                "explanation",
+                "exam",
+                "reflection",
+                "rest"
+              ]
+            },
+            "subjectId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "nodeIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "questionRanges": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "reviewItemIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "volume": {
+              "type": "string"
+            },
+            "successCriterion": {
+              "type": "string"
+            },
+            "fallbackAction": {
+              "type": "string"
+            },
+            "reason": {
+              "type": "string"
+            },
+            "priorityScore": {
+              "type": "number"
+            },
+            "status": {
+              "enum": [
+                "planned",
+                "inProgress",
+                "done",
+                "partial",
+                "skipped",
+                "moved"
+              ]
+            },
+            "actualMin": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "proposalId",
+            "localDate",
+            "start",
+            "durationMin",
+            "type",
+            "status"
+          ]
+        }
+      ]
+    },
+    "RewardEvent": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "sessionLogged",
+                "plannedStartOnTime",
+                "plannedMinutesDone",
+                "planFollowed",
+                "errorAnalyzed",
+                "errorTaskClosed",
+                "retrievalBeforeReveal",
+                "reviewOnTime",
+                "reviewRecovered",
+                "mixedPractice",
+                "transferImproved",
+                "masteryUp",
+                "masteryKept",
+                "calibrationImproved",
+                "examWrapper",
+                "weeklyReflection",
+                "returnAfterBreak",
+                "checkin",
+                "questDaily",
+                "questWeekly"
+              ]
+            },
+            "points": {
+              "type": "integer"
+            },
+            "at": {
+              "type": "string"
+            },
+            "refId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "xp": {
+              "type": "number"
+            },
+            "coins": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "kind",
+            "points",
+            "at",
+            "refId"
+          ]
+        }
+      ]
+    },
+    "Checkin": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "sleepHours": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sleepQuality": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "energy": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "stress": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "mood": {
+              "anyOf": [
+                {
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 5
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "preferredSessionMin": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "note": {
+              "type": "string"
+            },
+            "safetyFlag": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "localDate",
+            "sleepHours",
+            "sleepQuality",
+            "energy",
+            "stress",
+            "mood",
+            "preferredSessionMin",
+            "note",
+            "safetyFlag"
+          ]
+        }
+      ]
+    },
+    "QuestionnaireResponse": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "instrumentId": {
+              "type": "string"
+            },
+            "instrumentVersion": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "answers": {
+              "type": "object"
+            },
+            "scores": {
+              "type": "object"
+            },
+            "uncertainty": {
+              "type": "object"
+            },
+            "shareScope": {
+              "enum": [
+                "private"
+              ]
+            }
+          },
+          "required": [
+            "instrumentId",
+            "instrumentVersion",
+            "at",
+            "answers",
+            "scores",
+            "uncertainty",
+            "shareScope"
+          ]
+        }
+      ]
+    },
+    "Skill": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "subjectId": {
+              "type": "string"
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "nodeIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            }
+          },
+          "required": [
+            "subjectId",
+            "bookId",
+            "title",
+            "nodeIds"
+          ]
+        }
+      ]
+    },
+    "SkillEdge": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "from": {
+              "type": "string"
+            },
+            "to": {
+              "type": "string"
+            },
+            "type": {
+              "enum": [
+                "prerequisite",
+                "coRequisite",
+                "similar",
+                "misconception",
+                "transferTo"
+              ]
+            },
+            "weight": {
+              "type": "number"
+            },
+            "source": {
+              "enum": [
+                "expert",
+                "user",
+                "learned"
+              ]
+            }
+          },
+          "required": [
+            "from",
+            "to",
+            "type",
+            "weight",
+            "source"
+          ]
+        }
+      ]
+    },
+    "SkillState": {
+      "type": "object",
+      "properties": {
+        "skillId": {
+          "type": "string"
+        },
+        "pL": {
+          "type": "number"
+        },
+        "opportunities": {
+          "type": "integer"
+        },
+        "lastAt": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "params": {
+          "type": "object",
+          "properties": {
+            "pInit": {
+              "type": "number"
+            },
+            "pT": {
+              "type": "number"
+            },
+            "pG": {
+              "type": "number"
+            },
+            "pS": {
+              "type": "number"
+            },
+            "pF": {
+              "type": "number"
+            }
+          }
+        }
+      },
+      "required": [
+        "skillId",
+        "pL",
+        "opportunities"
+      ]
+    },
+    "DomainEvent": {
+      "type": "object",
+      "properties": {
+        "seq": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "at": {
+          "type": "string"
+        },
+        "payload": {
+          "type": "object"
+        }
+      },
+      "required": [
+        "name",
+        "at",
+        "payload"
+      ]
+    },
+    "R3_User": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "displayName": {
+              "type": "string"
+            },
+            "locale": {
+              "type": "string"
+            },
+            "timezone": {
+              "type": "string"
+            },
+            "status": {
+              "enum": [
+                "active",
+                "suspended"
+              ]
+            }
+          },
+          "required": [
+            "displayName",
+            "locale",
+            "timezone",
+            "status"
+          ]
+        }
+      ]
+    },
+    "R3_RoleAssignment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "userId": {
+              "type": "string"
+            },
+            "role": {
+              "enum": [
+                "student",
+                "teacher",
+                "assistant",
+                "guardian",
+                "schoolAdmin",
+                "author",
+                "reviewer",
+                "safetyOfficer",
+                "platformAdmin"
+              ]
+            },
+            "contextType": {
+              "enum": [
+                "org",
+                "school",
+                "class",
+                "group"
+              ]
+            },
+            "contextId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "userId",
+            "role",
+            "contextType",
+            "contextId"
+          ]
+        }
+      ]
+    },
+    "R3_ClassSection": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "schoolId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "title": {
+              "type": "string"
+            },
+            "kind": {
+              "enum": [
+                "schoolClass",
+                "sharedClass",
+                "extracurricular"
+              ]
+            },
+            "grade": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "branch": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "academicPeriodId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "visibility": {
+              "enum": [
+                "private",
+                "school"
+              ]
+            }
+          },
+          "required": [
+            "schoolId",
+            "title",
+            "kind",
+            "grade",
+            "branch",
+            "academicPeriodId",
+            "visibility"
+          ]
+        }
+      ]
+    },
+    "R3_Assignment": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "classId": {
+              "type": "string"
+            },
+            "title": {
+              "type": "string"
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ranges": {
+              "type": "array",
+              "items": {
+                "type": "object"
+              }
+            },
+            "due": {
+              "type": "string"
+            },
+            "visibleFrom": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "classId",
+            "title",
+            "bookId",
+            "ranges",
+            "due",
+            "visibleFrom"
+          ]
+        }
+      ]
+    },
+    "R3_SyncOperation": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "operationId": {
+              "type": "string"
+            },
+            "entity": {
+              "type": "string"
+            },
+            "entityId": {
+              "type": "string"
+            },
+            "op": {
+              "enum": [
+                "create",
+                "update",
+                "delete",
+                "event"
+              ]
+            },
+            "baseVersion": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "deviceId": {
+              "type": "string"
+            },
+            "payload": {
+              "type": "object"
+            }
+          },
+          "required": [
+            "operationId",
+            "entity",
+            "entityId",
+            "op",
+            "baseVersion",
+            "deviceId",
+            "payload"
+          ]
+        }
+      ]
+    },
+    "SessionDraft": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "wizardStep": {
+              "type": "integer"
+            },
+            "subjectId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "bookId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ranges": {
+              "type": "array"
+            },
+            "answers": {
+              "type": "object"
+            },
+            "flags": {
+              "type": "object"
+            },
+            "timerStartedAt": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "wizardStep"
+          ]
+        }
+      ]
+    },
+    "ErrorAnalysisTask": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "sessionId": {
+              "type": "string"
+            },
+            "attemptIds": {
+              "type": "array",
+              "items": {
+                "type": "string"
+              }
+            },
+            "status": {
+              "enum": [
+                "open",
+                "done",
+                "dismissed"
+              ]
+            },
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            }
+          },
+          "required": [
+            "sessionId",
+            "attemptIds",
+            "status"
+          ]
+        }
+      ]
+    },
+    "CoinTransaction": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "enum": [
+                "earn",
+                "spend",
+                "adjust"
+              ]
+            },
+            "amount": {
+              "type": "number"
+            },
+            "at": {
+              "type": "string"
+            },
+            "refId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "note": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "amount",
+            "at"
+          ]
+        }
+      ]
+    },
+    "RewardItem": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "title": {
+              "type": "string"
+            },
+            "emoji": {
+              "type": "string"
+            },
+            "price": {
+              "type": "number"
+            },
+            "cooldownHours": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "dailyLimit": {
+              "anyOf": [
+                {
+                  "type": "integer"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "active": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "title",
+            "price",
+            "active"
+          ]
+        }
+      ]
+    },
+    "Quest": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "scope": {
+              "enum": [
+                "daily",
+                "weekly"
+              ]
+            },
+            "localDate": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "template": {
+              "type": "string"
+            },
+            "params": {
+              "type": "object"
+            },
+            "difficulty": {
+              "enum": [
+                0.7,
+                1.0,
+                1.3
+              ]
+            },
+            "target": {
+              "type": "number"
+            },
+            "progress": {
+              "type": "number"
+            },
+            "status": {
+              "enum": [
+                "active",
+                "done",
+                "swapped",
+                "expired"
+              ]
+            },
+            "xp": {
+              "type": "number"
+            },
+            "coins": {
+              "type": "number"
+            },
+            "decisionId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "scope",
+            "localDate",
+            "template",
+            "target",
+            "status"
+          ]
+        }
+      ]
+    },
+    "Badge": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "scopeType": {
+              "enum": [
+                "topic",
+                "chapter"
+              ]
+            },
+            "bookId": {
+              "type": "string"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "tier": {
+              "enum": [
+                "none",
+                "bronze",
+                "silver",
+                "gold"
+              ]
+            },
+            "needsMaintenance": {
+              "type": "boolean"
+            },
+            "since": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "scopeType",
+            "bookId",
+            "nodeId",
+            "tier"
+          ]
+        }
+      ]
+    },
+    "PersonalRecord": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "kind": {
+              "type": "string"
+            },
+            "scopeRef": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "value": {
+              "type": "number"
+            },
+            "at": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "kind",
+            "value",
+            "at"
+          ]
+        }
+      ]
+    },
+    "BehaviorSignal": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "signal": {
+              "type": "string"
+            },
+            "value": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ciLow": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "ciHigh": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "n": {
+              "type": "integer"
+            },
+            "trend30d": {
+              "anyOf": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "computedAt": {
+              "type": "string"
+            },
+            "provenance": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "signal",
+            "n",
+            "computedAt"
+          ]
+        }
+      ]
+    },
+    "TraitScore": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "instrumentId": {
+              "type": "string"
+            },
+            "trait": {
+              "type": "string"
+            },
+            "score": {
+              "type": "number"
+            },
+            "bandLow": {
+              "type": "number"
+            },
+            "bandHigh": {
+              "type": "number"
+            },
+            "responseId": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "instrumentId",
+            "trait",
+            "score",
+            "responseId"
+          ]
+        }
+      ]
+    },
+    "AdaptationArmState": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decision": {
+              "type": "string"
+            },
+            "arm": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "bucket": {
+              "type": "string"
+            },
+            "a": {
+              "type": "number"
+            },
+            "b": {
+              "type": "number"
+            },
+            "overridden": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "decision",
+            "arm",
+            "bucket",
+            "a",
+            "b"
+          ]
+        }
+      ]
+    },
+    "AdaptationDecision": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decision": {
+              "type": "string"
+            },
+            "bucket": {
+              "type": "string"
+            },
+            "arm": {
+              "type": [
+                "string",
+                "number"
+              ]
+            },
+            "probability": {
+              "type": "number"
+            },
+            "at": {
+              "type": "string"
+            },
+            "refId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "outcome": {
+              "anyOf": [
+                {
+                  "enum": [
+                    0,
+                    1
+                  ]
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "outcomeAt": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "seed": {
+              "type": "integer"
+            }
+          },
+          "required": [
+            "decision",
+            "bucket",
+            "arm",
+            "probability",
+            "at"
+          ]
+        }
+      ]
+    },
+    "ExamBlueprint": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "examId": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "templateName": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "organizer": {
+              "type": "string"
+            },
+            "validFrom": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "sections": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "subjectId": {
+                    "type": "string"
+                  },
+                  "questionCount": {
+                    "type": "integer"
+                  },
+                  "durationMin": {
+                    "anyOf": [
+                      {
+                        "type": "integer"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "topics": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "bookId": {
+                          "type": "string"
+                        },
+                        "nodeId": {
+                          "type": "string"
+                        },
+                        "weight": {
+                          "type": "number"
+                        }
+                      },
+                      "required": [
+                        "bookId",
+                        "nodeId",
+                        "weight"
+                      ]
+                    }
+                  },
+                  "freeTopics": {
+                    "type": "array",
+                    "items": {
+                      "type": "string"
+                    }
+                  }
+                },
+                "required": [
+                  "subjectId",
+                  "questionCount",
+                  "topics"
+                ]
+              }
+            }
+          },
+          "required": [
+            "organizer",
+            "sections"
+          ]
+        }
+      ]
+    },
+    "ReadinessSnapshot": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "examId": {
+              "type": "string"
+            },
+            "at": {
+              "type": "string"
+            },
+            "RI": {
+              "type": "number"
+            },
+            "components": {
+              "type": "object",
+              "properties": {
+                "A": {
+                  "type": "number"
+                },
+                "Cov": {
+                  "type": "number"
+                },
+                "Ret": {
+                  "type": "number"
+                },
+                "Mock": {
+                  "type": "number"
+                },
+                "Err": {
+                  "type": "number"
+                }
+              }
+            },
+            "perSection": {
+              "type": "array"
+            },
+            "P10": {
+              "type": "number"
+            },
+            "P50": {
+              "type": "number"
+            },
+            "P90": {
+              "type": "number"
+            },
+            "modelProvenance": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "examId",
+            "at",
+            "RI",
+            "components",
+            "P50"
+          ]
+        }
+      ]
+    },
+    "Insight": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "templateId": {
+              "type": "string"
+            },
+            "weekStart": {
+              "$ref": "#/$defs/LocalDate"
+            },
+            "effect": {
+              "type": "number"
+            },
+            "n": {
+              "type": "integer"
+            },
+            "probability": {
+              "type": "number"
+            },
+            "impactPP": {
+              "type": "number"
+            },
+            "text_fa": {
+              "type": "string"
+            },
+            "action": {
+              "type": "object"
+            },
+            "status": {
+              "enum": [
+                "shown",
+                "dismissed",
+                "acted"
+              ]
+            }
+          },
+          "required": [
+            "templateId",
+            "weekStart",
+            "n",
+            "probability",
+            "text_fa"
+          ]
+        }
+      ]
+    },
+    "AssistantConversation": {
+      "allOf": [
+        {
+          "$ref": "#/$defs/Common"
+        },
+        {
+          "type": "object",
+          "properties": {
+            "flowId": {
+              "type": "string"
+            },
+            "nodeId": {
+              "type": "string"
+            },
+            "slots": {
+              "type": "object"
+            },
+            "history": {
+              "type": "array"
+            }
+          },
+          "required": [
+            "flowId",
+            "nodeId",
+            "slots"
+          ]
+        }
+      ]
+    }
+  }
+}

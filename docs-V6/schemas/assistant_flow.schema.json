@@ -1,0 +1,169 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "ss/assistant_flow.schema.json",
+  "title": "SS Assistant Flow v1",
+  "type": "object",
+  "required": [
+    "id",
+    "version",
+    "title_fa",
+    "entry",
+    "nodes"
+  ],
+  "properties": {
+    "id": {
+      "type": "string"
+    },
+    "version": {
+      "type": "string"
+    },
+    "title_fa": {
+      "type": "string"
+    },
+    "entry": {
+      "type": "string"
+    },
+    "nodes": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/Node"
+      }
+    }
+  },
+  "$defs": {
+    "Button": {
+      "type": "object",
+      "required": [
+        "label_fa"
+      ],
+      "properties": {
+        "label_fa": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string",
+          "description": "node id, or '__back' to pop history"
+        },
+        "flow": {
+          "type": "string"
+        },
+        "set": {
+          "type": "object"
+        },
+        "deepLink": {
+          "type": "string"
+        },
+        "action": {
+          "type": "string",
+          "description": "handler:args shortcut executed before next"
+        }
+      }
+    },
+    "Branch": {
+      "type": "object",
+      "required": [
+        "if",
+        "next"
+      ],
+      "properties": {
+        "if": {
+          "type": "string"
+        },
+        "next": {
+          "type": "string"
+        }
+      }
+    },
+    "Node": {
+      "type": "object",
+      "required": [
+        "type"
+      ],
+      "properties": {
+        "type": {
+          "enum": [
+            "message",
+            "menu",
+            "ask",
+            "action",
+            "card",
+            "end"
+          ]
+        },
+        "text_fa": {
+          "type": "string"
+        },
+        "buttons": {
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/Button"
+            }
+          }
+        },
+        "ask": {
+          "type": "object",
+          "required": [
+            "slot",
+            "input"
+          ],
+          "properties": {
+            "slot": {
+              "type": "string"
+            },
+            "input": {
+              "enum": [
+                "number",
+                "text",
+                "choice",
+                "date",
+                "answerString"
+              ]
+            },
+            "validate": {
+              "type": "string"
+            },
+            "choicesFrom": {
+              "type": "string"
+            }
+          }
+        },
+        "action": {
+          "type": "object",
+          "required": [
+            "handler"
+          ],
+          "properties": {
+            "handler": {
+              "type": "string"
+            },
+            "args": {
+              "type": "object"
+            },
+            "saveAs": {
+              "type": "string"
+            }
+          }
+        },
+        "card": {
+          "type": "string",
+          "description": "card component id"
+        },
+        "next": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "array",
+              "items": {
+                "$ref": "#/$defs/Branch"
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,45 @@
+openapi: 3.1.0
+info: {title: SS Hub Sync API (R3 draft), version: 0.1.0}
+servers: [{url: https://hub.local/api}]
+components:
+  securitySchemes:
+    deviceToken: {type: http, scheme: bearer}
+  schemas:
+    SyncOperation:
+      type: object
+      required: [operationId, entity, entityId, op, deviceId, payload]
+      properties:
+        operationId: {type: string, format: uuid}
+        entity: {type: string}
+        entityId: {type: string}
+        op: {enum: [create, update, delete, event]}
+        baseVersion: {type: [integer, "null"]}
+        deviceId: {type: string}
+        payload: {type: object}
+    PushResult:
+      type: object
+      properties:
+        accepted: {type: array, items: {type: string}}
+        conflicts: {type: array, items: {type: object, properties: {operationId: {type: string}, reason: {type: string}, serverVersion: {type: object}}}}
+    PullResult:
+      type: object
+      properties:
+        changes: {type: array, items: {type: object}}
+        tombstones: {type: array, items: {type: object, properties: {entity: {type: string}, entityId: {type: string}}}}
+        cursor: {type: string}
+security: [{deviceToken: []}]
+paths:
+  /devices/enroll:
+    post: {summary: Enroll device with one-time code, security: [], requestBody: {content: {application/json: {schema: {type: object, properties: {code: {type: string}, deviceName: {type: string}, publicKey: {type: string}}}}}}, responses: {'200': {description: device token}}}
+  /sync/push:
+    post: {summary: Push operations (idempotent), requestBody: {content: {application/json: {schema: {type: object, properties: {ops: {type: array, items: {$ref: '#/components/schemas/SyncOperation'}}}}}}}, responses: {'200': {content: {application/json: {schema: {$ref: '#/components/schemas/PushResult'}}}}}}
+  /sync/pull:
+    get: {summary: Pull changes since cursor, parameters: [{name: cursor, in: query, schema: {type: string}}], responses: {'200': {content: {application/json: {schema: {$ref: '#/components/schemas/PullResult'}}}}}}
+  /classes:
+    get: {summary: Classes visible to caller, responses: {'200': {description: list}}}
+    post: {summary: Create class (teacher/admin), responses: {'201': {description: created}}}
+  /classes/{id}/assignments:
+    get: {summary: List assignments, parameters: [{name: id, in: path, required: true, schema: {type: string}}], responses: {'200': {description: list}}}
+    post: {summary: Create assignment, parameters: [{name: id, in: path, required: true, schema: {type: string}}], responses: {'201': {description: created}}}
+  /telegram/pairing-code:
+    post: {summary: Create one-time Telegram pairing code (R4), responses: {'200': {description: code with TTL}}}

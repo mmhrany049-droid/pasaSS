@@ -1,0 +1,156 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "SS v4 bundle manifests",
+ "oneOf": [
+  {
+   "title": "ssx manifest",
+   "type": "object",
+   "required": [
+    "format",
+    "formatVersion",
+    "memberId",
+    "publicKey",
+    "createdAt",
+    "consent",
+    "catalogVersion"
+   ],
+   "properties": {
+    "format": {
+     "const": "ssx"
+    },
+    "formatVersion": {
+     "type": "integer"
+    },
+    "appVersion": {
+     "type": "string"
+    },
+    "dataVersion": {
+     "type": "integer"
+    },
+    "catalogVersion": {
+     "type": "string"
+    },
+    "memberId": {
+     "type": "string",
+     "pattern": "^[0-9a-f]{32}$"
+    },
+    "publicKey": {
+     "type": "string"
+    },
+    "createdAt": {
+     "type": "string",
+     "format": "date-time"
+    },
+    "sinceCursor": {
+     "type": [
+      "string",
+      "null"
+     ]
+    },
+    "untilCursor": {
+     "type": "string"
+    },
+    "revoke": {
+     "type": "boolean"
+    },
+    "consent": {
+     "type": "object",
+     "required": [
+      "version",
+      "dataClasses"
+     ],
+     "properties": {
+      "version": {
+       "type": "string"
+      },
+      "guardianConfirmed": {
+       "type": "boolean"
+      },
+      "dataClasses": {
+       "type": "array",
+       "items": {
+        "enum": [
+         "attempts",
+         "reviews",
+         "sessions",
+         "history",
+         "books",
+         "exams",
+         "checkinBuckets",
+         "realDatesExams"
+        ]
+       }
+      }
+     }
+    },
+    "cohortTags": {
+     "type": "object",
+     "properties": {
+      "stream": {
+       "enum": [
+        "rf",
+        "tj"
+       ]
+      },
+      "grade": {
+       "enum": [
+        10,
+        11,
+        12
+       ]
+      },
+      "region": {
+       "type": "string"
+      },
+      "organizers": {
+       "type": "array",
+       "items": {
+        "type": "string"
+       }
+      }
+     }
+    },
+    "counts": {
+     "type": "object"
+    }
+   }
+  },
+  {
+   "title": "ssp manifest",
+   "type": "object",
+   "required": [
+    "format",
+    "packVersion",
+    "catalogVersion",
+    "createdAt",
+    "signerKey"
+   ],
+   "properties": {
+    "format": {
+     "const": "ssp"
+    },
+    "packVersion": {
+     "type": "string"
+    },
+    "catalogVersion": {
+     "type": "string"
+    },
+    "createdAt": {
+     "type": "string"
+    },
+    "members": {
+     "type": "integer"
+    },
+    "gatesPassed": {
+     "type": "array",
+     "items": {
+      "type": "string"
+     }
+    },
+    "signerKey": {
+     "type": "string"
+    }
+   }
+  }
+ ]
+}

@@ -1,0 +1,150 @@
+{
+ "physics2_kheilisabz.ssb": {
+  "confidence": "from titles; owner to confirm",
+  "weightRule": "equal split 1/k unless overridden",
+  "map": {
+   "فصل ۱/بخش ۱": [
+    "tb.11.fizik2.rf/c1/s1",
+    "tb.11.fizik2.rf/c1/s2"
+   ],
+   "فصل ۱/بخش ۲": [
+    "tb.11.fizik2.rf/c1/s3",
+    "tb.11.fizik2.rf/c1/s4",
+    "tb.11.fizik2.rf/c1/s5",
+    "tb.11.fizik2.rf/c1/s6"
+   ],
+   "فصل ۱/بخش ۳": [
+    "tb.11.fizik2.rf/c1/s7",
+    "tb.11.fizik2.rf/c1/s8",
+    "tb.11.fizik2.rf/c1/s9"
+   ],
+   "فصل ۱/بخش ۴": [
+    "tb.11.fizik2.rf/c1/s10",
+    "tb.11.fizik2.rf/c1/s11",
+    "tb.11.fizik2.rf/c1/s12"
+   ],
+   "فصل ۲/بخش ۱": [
+    "tb.11.fizik2.rf/c2/s1",
+    "tb.11.fizik2.rf/c2/s2",
+    "tb.11.fizik2.rf/c2/s3"
+   ],
+   "فصل ۲/بخش ۲": [
+    "tb.11.fizik2.rf/c2/s4"
+   ],
+   "فصل ۲/بخش ۳": [
+    "tb.11.fizik2.rf/c2/s5"
+   ],
+   "فصل ۲/بخش ۴": [
+    "tb.11.fizik2.rf/c2/s6"
+   ],
+   "فصل ۳/بخش ۱": [
+    "tb.11.fizik2.rf/c3/s1",
+    "tb.11.fizik2.rf/c3/s2"
+   ],
+   "فصل ۳/بخش ۲": [
+    "tb.11.fizik2.rf/c3/s3",
+    "tb.11.fizik2.rf/c3/s4"
+   ],
+   "فصل ۳/بخش ۳": [
+    "tb.11.fizik2.rf/c3/s5"
+   ],
+   "فصل ۳/بخش ۴": [
+    "tb.11.fizik2.rf/c3/s6"
+   ],
+   "فصل ۴/بخش ۱": [
+    "tb.11.fizik2.rf/c4/s1",
+    "tb.11.fizik2.rf/c4/s2",
+    "tb.11.fizik2.rf/c4/s3"
+   ],
+   "فصل ۴/بخش ۲": [
+    "tb.11.fizik2.rf/c4/s4"
+   ],
+   "فصل ۴/بخش ۳": [
+    "tb.11.fizik2.rf/c4/s5"
+   ]
+  }
+ },
+ "calculus1_olgoo.ssb": {
+  "confidence": "exact (same lesson numbering as textbook)",
+  "weightRule": "equal split 1/k unless overridden",
+  "map": {
+   "فصل 1/درس 1": [
+    "tb.11.hesaban1/c1/l1"
+   ],
+   "فصل 1/درس 2": [
+    "tb.11.hesaban1/c1/l2"
+   ],
+   "فصل 1/درس 3": [
+    "tb.11.hesaban1/c1/l3"
+   ],
+   "فصل 1/درس 4": [
+    "tb.11.hesaban1/c1/l4"
+   ],
+   "فصل 1/درس 5": [
+    "tb.11.hesaban1/c1/l5"
+   ],
+   "فصل 2/درس 1": [
+    "tb.11.hesaban1/c2/l1"
+   ],
+   "فصل 2/درس 2": [
+    "tb.11.hesaban1/c2/l2"
+   ],
+   "فصل 2/درس 3": [
+    "tb.11.hesaban1/c2/l3"
+   ],
+   "فصل 2/درس 4": [
+    "tb.11.hesaban1/c2/l4"
+   ],
+   "فصل 3/درس 1": [
+    "tb.11.hesaban1/c3/l1"
+   ],
+   "فصل 3/درس 2": [
+    "tb.11.hesaban1/c3/l2"
+   ],
+   "فصل 3/درس 3": [
+    "tb.11.hesaban1/c3/l3"
+   ],
+   "فصل 4/درس 1": [
+    "tb.11.hesaban1/c4/l1"
+   ],
+   "فصل 4/درس 2": [
+    "tb.11.hesaban1/c4/l2"
+   ],
+   "فصل 4/درس 3": [
+    "tb.11.hesaban1/c4/l3"
+   ],
+   "فصل 4/درس 4": [
+    "tb.11.hesaban1/c4/l4"
+   ],
+   "فصل 5/درس 3": [
+    "tb.11.hesaban1/c5/l3"
+   ],
+   "فصل 5/درس 4": [
+    "tb.11.hesaban1/c5/l4"
+   ],
+   "فصل 5/درس 5": [
+    "tb.11.hesaban1/c5/l5"
+   ],
+   "فصل 5/درس‌های ۱ و ۲": [
+    "tb.11.hesaban1/c5/l1",
+    "tb.11.hesaban1/c5/l2"
+   ]
+  },
+  "note": "test-book merged node «درس‌های ۱ و ۲» maps to two textbook lessons (many-to-one)"
+ },
+ "chemistry2_mobtakeran.ssb": {
+  "confidence": "chapter-level only",
+  "weightRule": "equal split 1/k unless overridden",
+  "map": {
+   "فصل 1": [
+    "tb.11.shimi2/c1"
+   ],
+   "فصل 2": [
+    "tb.11.shimi2/c2"
+   ],
+   "فصل 3": [
+    "tb.11.shimi2/c3"
+   ]
+  }
+ }
+}

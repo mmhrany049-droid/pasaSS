@@ -1,0 +1,107 @@
+{
+ "$schema": "https://json-schema.org/draft/2020-12/schema",
+ "title": "SS v4 curriculum catalog",
+ "type": "object",
+ "required": [
+  "catalogVersion",
+  "programs",
+  "textbooks"
+ ],
+ "properties": {
+  "catalogVersion": {
+   "type": "string"
+  },
+  "edition": {
+   "type": "string"
+  },
+  "programs": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "stream",
+     "grade",
+     "status",
+     "textbooks"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^(rf|tj)\\.(10|11|12)$"
+     },
+     "stream": {
+      "enum": [
+       "rf",
+       "tj"
+      ]
+     },
+     "grade": {
+      "enum": [
+       10,
+       11,
+       12
+      ]
+     },
+     "status": {
+      "enum": [
+       "verified",
+       "pending-owner-input",
+       "draft"
+      ]
+     },
+     "textbooks": {
+      "type": "array",
+      "items": {
+       "type": "string"
+      }
+     }
+    }
+   }
+  },
+  "textbooks": {
+   "type": "array",
+   "items": {
+    "type": "object",
+    "required": [
+     "id",
+     "title",
+     "grade",
+     "streams",
+     "nodes"
+    ],
+    "properties": {
+     "id": {
+      "type": "string",
+      "pattern": "^tb\\.(10|11|12)\\.[a-z0-9]+(\\.(rf|tj))?$"
+     },
+     "nodes": {
+      "type": "array",
+      "items": {
+       "type": "object",
+       "required": [
+        "id",
+        "depth",
+        "kind",
+        "title"
+       ],
+       "properties": {
+        "kind": {
+         "enum": [
+          "chapter",
+          "lesson",
+          "subtopic",
+          "problemSet"
+         ]
+        },
+        "replacedBy": {
+         "type": "string"
+        }
+       }
+      }
+     }
+    }
+   }
+  }
+ }
+}

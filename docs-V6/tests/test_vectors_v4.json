@@ -1,0 +1,93 @@
+{
+ "_notes": "v4 vectors (spec 38, 33, 34). Tolerance 1e-6 unless stated.",
+ "gainPerMin": [
+  {
+   "weight": 0.1,
+   "velocityPerHour": 0.06,
+   "minutes": 60,
+   "pW": 0.3,
+   "pB": 0.1,
+   "expected": {
+    "dp": 0.06,
+    "gainPP": 0.75,
+    "perMin": 0.0125
+   }
+  }
+ ],
+ "readinessClamp": [
+  {
+   "A": -0.2,
+   "Cov": 0.5,
+   "Ret": 0.8,
+   "Mock": 0.5,
+   "Err": 1,
+   "expected": 39.5
+  }
+ ],
+ "historyL2": [
+  {
+   "N": 80,
+   "percent": 60,
+   "blankShare": 0.2,
+   "expected": {
+    "C": 52,
+    "W": 12,
+    "B": 16
+   }
+  }
+ ],
+ "approxDateWeight": [
+  {
+   "fromAgeDays": 30,
+   "toAgeDays": 60,
+   "H": 21,
+   "expected": 0.235796,
+   "note": "uniform interval, closed form H/(ln2\u00b7\u0394)\u00b7(0.5^(a1/H)\u22120.5^(a2/H))"
+  },
+  {
+   "unknown": true,
+   "expected": 0.3
+  }
+ ],
+ "propagation": [
+  {
+   "delta": 0.2,
+   "edge": "identical",
+   "hops": 1,
+   "gamma": 0.5,
+   "expected": 0.1
+  },
+  {
+   "delta": 0.2,
+   "edge": "prerequisite",
+   "hops": 1,
+   "gamma": 0.5,
+   "expected": 0.03
+  },
+  {
+   "delta": 0.02,
+   "edge": "partial",
+   "overlap": 0.5,
+   "hops": 2,
+   "gamma": 0.5,
+   "expected": 0.0,
+   "note": "0.02*0.25*0.25=0.00125<0.01 \u2192 stop"
+  }
+ ],
+ "fusion": [
+  {
+   "pPers": 0.7,
+   "tauPers": 2,
+   "pPop": 0.5,
+   "tauPop": 8,
+   "expected": 0.54
+  },
+  {
+   "pPers": 0.7,
+   "tauPers": 40,
+   "pPop": 0.5,
+   "tauPop": 8,
+   "expected": 0.666667
+  }
+ ]
+}
